@@ -10,6 +10,8 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Queue;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.stream.Stream;
 
 public class Main {
@@ -38,7 +40,20 @@ public class Main {
 
             fillObjects(input);
 
-            // TODO a lot of magic will happen here!
+            for (int d = 1; d <= simulationDurations; d++) {
+
+                for (int i = 0; i < intersections.size(); i++) {
+                    List<Integer> incomingRoads = intersections.get(i).incomingRoads;
+
+
+
+                }
+
+
+                // iterate all intersections for incoming streets
+                    // iterate all cars per street
+
+            }
 
             String[] outputs = prepareOutput();
 
@@ -91,6 +106,14 @@ public class Main {
             intersections.get(end).incomingRoads.add(i);
         }
 
+        for (int i = 0; i < numberOfIntersections; i++) {
+            int incomingSize = intersections.get(i).incomingRoads.size();
+            intersections.get(i).greenLights = new int[incomingSize];
+            for (int gl = 0; gl < intersections.get(i).greenLights.length; gl++) {
+                intersections.get(i).greenLights[gl] = 1;
+            }
+        }
+
         paddingPrefix += numberOfStreets;
 
         cars = new Car[numberOfCars];
@@ -133,9 +156,18 @@ public class Main {
     private static String[] prepareOutput() {
         String result = "";
         // TODO
+        result = result.concat(intersections.size() + "\n");
+        for (int i = 0; i < intersections.size(); i++) {
+            Intersection intersection = intersections.get(i);
+            result = result.concat(intersection.index + "\n");
+            for(int road = 0; road < intersection.incomingRoads.size(); road ++) {
+                result = result.concat(streets[intersection.incomingRoads.get(road)].name + " " + intersection.greenLights[road] + "\n");
+            }
+        }
+
+
         return result.split("\\n");
     }
-
 
     public static class Street {
         int index;
@@ -143,6 +175,7 @@ public class Main {
         int endIntersection;
         String name;
         int timeToTake;
+        Queue<Integer> currentCars = new LinkedBlockingQueue<>();
 
         public Street(int index, int startIntersection, int endIntersection, String name, int timeToTake) {
             this.index = index;
@@ -156,6 +189,7 @@ public class Main {
     public static class Car {
         int index;
         String[] route;
+        int remainingTimeToIntersection;
 
         public Car(int index, String[] route) {
             this.index = index;
@@ -165,6 +199,8 @@ public class Main {
 
     public static class Intersection {
         int index;
+
+        int[] greenLights;
         List<Integer> incomingRoads;
         List<Integer> outgoingRoads;
 
