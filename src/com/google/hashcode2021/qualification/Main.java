@@ -79,7 +79,16 @@ public class Main {
         streets = new Street[numberOfStreets];
         for (int i = 0; i < numberOfStreets; i++) {
             String[] street = lines[i + paddingPrefix].split(" ");
-            streets[i] = new Street(i, Integer.valueOf(street[0]), Integer.valueOf(street[1]), street[2], Integer.valueOf(street[3]));
+
+            int start = Integer.valueOf(street[0]);
+            int end = Integer.valueOf(street[1]);
+            String name = street[2];
+            int timeToTake = Integer.valueOf(street[3]);
+
+            streets[i] = new Street(i, start, end, street[2], timeToTake);
+
+            intersections.get(start).outgoingRoads.add(i);
+            intersections.get(end).incomingRoads.add(i);
         }
 
         paddingPrefix += numberOfStreets;
