@@ -21,6 +21,7 @@ public class Main {
     static int numberOfCars = 0;
     static int bonusPoint = 0;
 
+    static List<Intersection> intersections;
     static Street[] streets;
     static Car[] cars;
 
@@ -67,6 +68,11 @@ public class Main {
         numberOfStreets = Integer.valueOf(mainParts[2]);
         numberOfCars = Integer.valueOf(mainParts[3]);
         bonusPoint = Integer.valueOf(mainParts[4]);
+
+        intersections = new ArrayList<>();
+        for (int i = 0; i < numberOfIntersections; i++) {
+            intersections.add(new Intersection(i));
+        }
 
         int paddingPrefix = 1;
 
@@ -123,7 +129,6 @@ public class Main {
 
 
     public static class Street {
-
         int index;
         int startIntersection;
         int endIntersection;
@@ -146,6 +151,18 @@ public class Main {
         public Car(int index, String[] route) {
             this.index = index;
             this.route = route;
+        }
+    }
+
+    public static class Intersection {
+        int index;
+        List<Integer> incomingRoads;
+        List<Integer> outgoingRoads;
+
+        public Intersection(int index) {
+            this.index = index;
+            this.incomingRoads = new ArrayList<>();
+            this.outgoingRoads = new ArrayList<>();
         }
     }
 
