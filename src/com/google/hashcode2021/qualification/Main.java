@@ -15,6 +15,14 @@ import java.util.stream.Stream;
 public class Main {
 
     // global variables;
+    static int simulationDurations = 0;
+    static int numberOfIntersections = 0;
+    static int numberOfStreets = 0;
+    static int numberOfCars = 0;
+    static int bonusPoint = 0;
+
+    static Street[] streets;
+    static Car[] cars;
 
     public static void main(String[] args) throws IOException {
         System.out.println("- - - - - - - - - - - - - - - - - - - - - - - - - - ");
@@ -50,7 +58,32 @@ public class Main {
     private static void fillObjects(String input) {
         String[] lines = input.split("\\n");
         String[] mainParts = lines[0].split(" ");
-        // TODO
+        simulationDurations = Integer.valueOf(mainParts[0]);
+        numberOfIntersections = Integer.valueOf(mainParts[1]);
+        numberOfStreets = Integer.valueOf(mainParts[2]);
+        numberOfCars = Integer.valueOf(mainParts[3]);
+        bonusPoint = Integer.valueOf(mainParts[4]);
+
+        int paddingPrefix = 1;
+
+        streets = new Street[numberOfStreets];
+        for (int i = 0; i < numberOfStreets; i++) {
+            String[] street = lines[i + paddingPrefix].split(" ");
+            streets[i] = new Street(i, Integer.valueOf(street[0]), Integer.valueOf(street[0]), street[0], Integer.valueOf(street[0]));
+        }
+
+        paddingPrefix += numberOfStreets;
+
+        cars = new Car[numberOfCars];
+        for (int i = 0; i < numberOfCars; i++) {
+            String[] car = lines[i + paddingPrefix].split(" ");
+            int numberOfRoutes = Integer.valueOf(car[i]);
+            String[] routes = new String[numberOfRoutes];
+            for (int r = 0; r < numberOfRoutes; r++) {
+                routes[r] = car[1 + r];
+            }
+            cars[i] = new Car(i, routes);
+        }
     }
 
     private static String readFile(String file) {
@@ -83,5 +116,34 @@ public class Main {
         // TODO
         return result.split("\\n");
     }
+
+
+    public static class Street {
+
+        int index;
+        int startIntersection;
+        int endIntersection;
+        String name;
+        int timeToTake;
+
+        public Street(int index, int startIntersection, int endIntersection, String name, int timeToTake) {
+            this.index = index;
+            this.startIntersection = startIntersection;
+            this.endIntersection = endIntersection;
+            this.name = name;
+            this.timeToTake = timeToTake;
+        }
+    }
+
+    public static class Car {
+        int index;
+        String[] route;
+
+        public Car(int index, String[] route) {
+            this.index = index;
+            this.route = route;
+        }
+    }
+
 
 }
