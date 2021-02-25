@@ -48,10 +48,14 @@ public class Main {
 
     private static List<String> collectFiles() {
         List<String> files = new ArrayList<>();
-        /*
-            Insert all input file names under root's "input" director!
-            files.add("{INPUT FILE}");
-         */
+
+        files.add("a.txt");
+        files.add("b.txt");
+        files.add("c.txt");
+        files.add("d.txt");
+        files.add("e.txt");
+        files.add("f.txt");
+
         return files;
     }
 
@@ -69,7 +73,7 @@ public class Main {
         streets = new Street[numberOfStreets];
         for (int i = 0; i < numberOfStreets; i++) {
             String[] street = lines[i + paddingPrefix].split(" ");
-            streets[i] = new Street(i, Integer.valueOf(street[0]), Integer.valueOf(street[0]), street[0], Integer.valueOf(street[0]));
+            streets[i] = new Street(i, Integer.valueOf(street[0]), Integer.valueOf(street[1]), street[2], Integer.valueOf(street[3]));
         }
 
         paddingPrefix += numberOfStreets;
@@ -77,7 +81,7 @@ public class Main {
         cars = new Car[numberOfCars];
         for (int i = 0; i < numberOfCars; i++) {
             String[] car = lines[i + paddingPrefix].split(" ");
-            int numberOfRoutes = Integer.valueOf(car[i]);
+            int numberOfRoutes = Integer.valueOf(car[0]);
             String[] routes = new String[numberOfRoutes];
             for (int r = 0; r < numberOfRoutes; r++) {
                 routes[r] = car[1 + r];
@@ -88,7 +92,7 @@ public class Main {
 
     private static String readFile(String file) {
         StringBuilder contentBuilder = new StringBuilder();
-        try (Stream<String> stream = Files.lines(Paths.get("input/" + file), StandardCharsets.UTF_8)) {
+        try (Stream<String> stream = Files.lines(Paths.get(file), StandardCharsets.UTF_8)) {
             stream.forEach(s -> contentBuilder.append(s).append("\n"));
         } catch (IOException e) {
             e.printStackTrace();
